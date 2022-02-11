@@ -1,6 +1,6 @@
 const express = require('express')
-const Entrepreneur = require('./models/entrepreneur')
-const auth = require('./middleware/auth')
+const Entrepreneur = require('../models/entrepreneur')
+const auth = require('../middleware/auth')
 const router = new express.Router()
 
 router.post('/entrepreneur', async (req, res) => {

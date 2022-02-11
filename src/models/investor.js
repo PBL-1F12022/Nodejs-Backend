@@ -1,8 +1,12 @@
 const mongoose = require('mongoose')
+const validator = require("validator")
+const bcrypt = require("bcrypt")
+const jwt = require("jsonwebtoken")
 
 const investorSchema = new mongoose.Schema({
     name: {
-        type: String
+        type: String,
+        required: true
     },
     email: {
         type: String,
@@ -22,6 +26,11 @@ const investorSchema = new mongoose.Schema({
         minLength: 7,
         trim: true,
     },
+    phone: {
+        type: Number,
+        required: true,
+        unique: true
+    },
     tokens: [{
         token: {
             type: String,
@@ -30,6 +39,24 @@ const investorSchema = new mongoose.Schema({
     }]
 }, {
     timestamps: true
+})
+
+investorSchema.methods.generateAuthToken = async function () {
+    const investor = this
+    const token = jwt.sign({ _id: investor.id.toString() }, process.env.JWT_SECRET)
+
+    investor.tokens = investor.tokens.concat({ token })
+    await investor.save()
+
+    return token
+}
+
+investorSchema.pre('save', async function (next) {
+    const investor = this
+    if (investor.isModified('password')) {
+        investor.password = await bcrypt.hash(investor.password, 8)
+    }
+    next()
 })
 
 const Investor = mongoose.model('Investor', investorSchema)
