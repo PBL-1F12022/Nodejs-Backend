@@ -15,4 +15,14 @@ router.post('/investor', async (req, res) => {
     // res.send({ success: "Investor creation successful" })
 })
 
+router.post('/investor/login', async (req, res) => {
+    try {
+        const investor = await Investor.findByCredentials(req.body.email, req.body.password)
+        const token = await investor.generateAuthToken()
+        res.send({ investor, token })
+    } catch (e) {
+        res.status(400).send(e)
+    }
+})
+
 module.exports = router

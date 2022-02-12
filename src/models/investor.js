@@ -59,7 +59,6 @@ investorSchema.methods.toJSON = function () {
 
     delete investorObject.password
     delete investorObject.tokens
-    delete investorObject.avatar
 
     return investorObject
 }
@@ -71,6 +70,21 @@ investorSchema.pre('save', async function (next) {
     }
     next()
 })
+
+investorSchema.statics.findByCredentials = async (email, password) => {
+    const investor = await Investor.findOne({ email })
+    if (!investor) {
+        throw new Error('No investor register to this email')
+    }
+
+    const isMatched = await bcrypt.compare(password, investor.password)
+
+    if (!isMatched) {
+        throw new Error('Password does not match')
+    }
+
+    return investor
+}
 
 const Investor = mongoose.model('Investor', investorSchema)
 
