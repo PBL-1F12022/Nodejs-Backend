@@ -3,6 +3,8 @@ const validator = require("validator")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 
+mongoose.connect(process.env.MONGODB_URL)
+
 const investorSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -49,6 +51,17 @@ investorSchema.methods.generateAuthToken = async function () {
     await investor.save()
 
     return token
+}
+
+investorSchema.methods.toJSON = function () {
+    const investor = this
+    const investorObject = investor.toObject()
+
+    delete investorObject.password
+    delete investorObject.tokens
+    delete investorObject.avatar
+
+    return investorObject
 }
 
 investorSchema.pre('save', async function (next) {
