@@ -1,5 +1,5 @@
 const express = require('express')
-const auth = require('../middleware/auth')
+const authI = require('../middleware/authI')
 const Investor = require('../models/investor')
 const router = new express.Router()
 
@@ -22,6 +22,32 @@ router.post('/investor/login', async (req, res) => {
         res.send({ investor, token })
     } catch (e) {
         res.status(400).send(e)
+    }
+})
+
+router.post('/investor/logout', authI, async (req, res) => {
+    try {
+        req.investor.tokens = req.investor.tokens.filter((token) => {
+            return token.token !== req.token
+        })
+        await req.investor.save()
+
+        res.send()
+    } catch (e) {
+        res.status(500).send(e)
+    }
+})
+
+router.get('/investor/me', authI, async (req, res) => {
+    res.send(req.investor)
+})
+
+router.delete('/investor/me', authI, async (req, res) => {
+    try {
+        await req.investor.remove()
+        res.send("Investor deleted successfully")
+    } catch (e) {
+        res.status(500).send(e)
     }
 })
 
