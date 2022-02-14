@@ -3,6 +3,7 @@ const authI = require('../middleware/authI')
 const Investor = require('../models/investor')
 const router = new express.Router()
 
+// Investor Creation Api
 router.post('/investor', async (req, res) => {
     const investor = new Investor(req.body)
     try {
@@ -12,9 +13,9 @@ router.post('/investor', async (req, res) => {
     } catch (e) {
         res.status(400).send(e)
     }
-    // res.send({ success: "Investor creation successful" })
 })
 
+// Investor Login Api
 router.post('/investor/login', async (req, res) => {
     try {
         const investor = await Investor.findByCredentials(req.body.email, req.body.password)
@@ -25,6 +26,7 @@ router.post('/investor/login', async (req, res) => {
     }
 })
 
+// Investor Logout Api
 router.post('/investor/logout', authI, async (req, res) => {
     try {
         req.investor.tokens = req.investor.tokens.filter((token) => {
@@ -38,6 +40,7 @@ router.post('/investor/logout', authI, async (req, res) => {
     }
 })
 
+// Investor Profile Api
 router.get('/investor/me', authI, async (req, res) => {
     res.send(req.investor)
 })
