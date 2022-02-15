@@ -18,9 +18,25 @@ router.post('/projects', authI, async (req, res) => {
     }
 })
 
+// GET /projects?limit=10
+// GET /projects?skip=0
 router.get('/projects', async (req, res) => {
+
+    let limit;
+    if (isNaN(parseInt(req.query.limit))) {
+        limit = 0
+    } else {
+        limit = parseInt(req.query.limit)
+    }
+
+    let skip;
+    if (isNaN(parseInt(req.query.skip))) {
+        skip = 0
+    } else {
+        skip = parseInt(req.query.skip)
+    }
     try {
-        const projects = await Project.find({})
+        const projects = await Project.find({}).sort().limit(limit).skip(skip)
         res.send(projects)
     } catch (e) {
         res.status(500).send(e)
