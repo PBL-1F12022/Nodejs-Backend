@@ -1,4 +1,9 @@
 const mongoose = require('mongoose')
+const validator = require("validator")
+const bcrypt = require("bcrypt")
+const jwt = require("jsonwebtoken")
+
+mongoose.connect(process.env.MONGODB_URL)
 
 const entrepreneurSchema = new mongoose.Schema({
     name: {
@@ -42,6 +47,17 @@ entrepreneurSchema.methods.generateAuthToken = async function () {
     return token
 }
 
+
+entrepreneurSchema.methods.toJSON = function () {
+    const entrepreneur = this
+    const entrepreneurObject = entrepreneur.toObject()
+    
+    delete entrepreneurObject.password
+    delete entrepreneurObject.tokens
+    
+    return entrepreneurObject
+}
+
 entrepreneurSchema.pre('save', async function (next) {
     const entrepreneur = this
     if (entrepreneur.isModified('password')) {
@@ -49,6 +65,27 @@ entrepreneurSchema.pre('save', async function (next) {
     }
     next()
 })
+
+entrepreneurSchema.virtual('projects', {
+    ref: 'Projects',
+    localField: '_id',
+    foreignField: 'owner'
+})
+
+entrepreneurSchema.statics.findByCredentials = async (email, password) => {
+    const entrepreneur = await Entrepreneur.findOne({ email })
+    if (!entrepreneur) {
+        throw new Error('No entrepreneur register to this email')
+    }
+
+    const isMatched = await bcrypt.compare(password, entrepreneur.password)
+
+    if (!isMatched) {
+        throw new Error('Password does not match')
+    }
+
+    return entrepreneur
+}
 
 const Entrepreneur = mongoose.model('Entrepreneur', entrepreneurSchema)
 

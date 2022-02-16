@@ -22,7 +22,7 @@ const projectSchema = new mongoose.Schema({
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        ref: 'Investor'
+        ref: 'Entrepreneur'
     }
 }, {
     timestamps: true

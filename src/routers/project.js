@@ -4,11 +4,11 @@ const authE = require('../middleware/authE')
 const authI = require('../middleware/authI')
 const router = new express.Router()
 
-router.post('/projects', authI, async (req, res) => {
+router.post('/projects', authE, async (req, res) => {
     const project = new Project({
         ...req.body,
-        owner: req.investor._id,
-        name: req.investor.name
+        owner: req.entrepreneur._id,
+        name: req.entrepreneur.name
     })
     try {
         await project.save()
@@ -43,7 +43,7 @@ router.get('/projects', async (req, res) => {
     }
 })
 
-router.patch('/projects/:id', authI, async (req, res) => {
+router.patch('/projects/:id', authE, async (req, res) => {
     const updates = Object.keys(req.body)
     const allowedUpdates = ['askingPrice', 'equity']
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
