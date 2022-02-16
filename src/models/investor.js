@@ -86,12 +86,6 @@ investorSchema.statics.findByCredentials = async (email, password) => {
     return investor
 }
 
-investorSchema.virtual('projects', {
-    ref: 'Projects',
-    localField: '_id',
-    foreignField: 'owner'
-})
-
 const Investor = mongoose.model('Investor', investorSchema)
 
 module.exports = Investor
