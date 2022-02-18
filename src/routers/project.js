@@ -8,7 +8,7 @@ router.post('/projects', authE, async (req, res) => {
     const project = new Project({
         ...req.body,
         owner: req.entrepreneur._id,
-        name: req.entrepreneur.name
+        ownerName: req.entrepreneur.name
     })
     try {
         await project.save()

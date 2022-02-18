@@ -23,6 +23,11 @@ const projectSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'Entrepreneur'
+    },
+    ownerName: {
+        type: String,
+        required: true,
+        trim: true
     }
 }, {
     timestamps: true
