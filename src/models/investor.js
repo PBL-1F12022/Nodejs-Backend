@@ -38,6 +38,13 @@ const investorSchema = new mongoose.Schema({
             type: String,
             required: true
         }
+    }],
+    bookmarks: [{
+        projectId: {
+            type: mongoose.Schema.Types.ObjectId,
+            unique: true,
+            ref: 'Project'
+        }
     }]
 }, {
     timestamps: true
@@ -59,6 +66,7 @@ investorSchema.methods.toJSON = function () {
 
     delete investorObject.password
     delete investorObject.tokens
+    delete investorObject.bookmarks
 
     return investorObject
 }

@@ -33,6 +33,13 @@ const projectSchema = new mongoose.Schema({
     timestamps: true
 })
 
+projectSchema.virtual('bookmarks', {
+    ref: 'Investor',
+    localField: '_id',
+    foreignField: 'projectId'
+})
+
 const project = mongoose.model('Project', projectSchema)
 
 module.exports = project
+// req.investor.bookmarks.push(req.body.bookmark)

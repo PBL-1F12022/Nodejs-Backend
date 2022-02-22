@@ -1,6 +1,7 @@
 const express = require('express')
 const authI = require('../middleware/authI')
 const Investor = require('../models/investor')
+const Project = require('../models/project')
 const router = new express.Router()
 
 // Investor Creation Api
@@ -50,6 +51,42 @@ router.delete('/investor/me', authI, async (req, res) => {
         await req.investor.remove()
         res.send("Investor deleted successfully")
     } catch (e) {
+        res.status(500).send(e)
+    }
+})
+
+// bookmark Api
+router.post('/bookmark', authI, async (req, res) => {
+    try {
+        const checkBookmarkId = obj => obj._id == req.body.bookmark;
+        if (req.investor.bookmarks.some(checkBookmarkId)) {
+            res.status(400).send("Bookmark already present")
+        } else {
+            req.investor.bookmarks.push(req.body.bookmark)
+            req.investor.save()
+            res.send(req.investor)
+        }
+    } catch (e) {
+        res.status(500).send(e)
+    }
+})
+
+// Get all bookmarked Projects
+router.get('/bookmarks', authI, async (req, res) => {
+    try {
+        var projects = []
+
+        await req.investor.bookmarks.forEach(async project => {
+            var result = await Project.findById(project._id);
+            projects.push(result);
+            console.log(projects);
+        });
+
+        console.log('Test');
+        res.send(projects)
+    }
+
+    catch (e) {
         res.status(500).send(e)
     }
 })
