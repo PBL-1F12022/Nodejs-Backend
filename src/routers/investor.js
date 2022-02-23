@@ -64,7 +64,7 @@ router.post('/bookmark', authI, async (req, res) => {
         } else {
             req.investor.bookmarks.push(req.body.bookmark)
             req.investor.save()
-            res.send(req.investor)
+            res.send(req.body.bookmark)
         }
     } catch (e) {
         res.status(500).send(e)
