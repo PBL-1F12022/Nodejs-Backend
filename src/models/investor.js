@@ -42,8 +42,9 @@ const investorSchema = new mongoose.Schema({
     bookmarks: [{
         projectId: {
             type: mongoose.Schema.Types.ObjectId,
-            // unique: true,
-            ref: 'Project'
+            ref: 'Project',
+            required: false,
+            unique: false
         }
     }]
 }, {
