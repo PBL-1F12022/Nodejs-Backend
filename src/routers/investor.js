@@ -75,14 +75,14 @@ router.post('/bookmark', authI, async (req, res) => {
 router.get('/bookmarks', authI, async (req, res) => {
     try {
         var projects = []
-
-        await req.investor.bookmarks.forEach(async project => {
-            var result = await Project.findById(project._id);
+        const bookmarks = req.investor.bookmarks;
+        // let i = 0;
+        for (let i = 0; i < bookmarks.length; i++) {
+            let id = bookmarks[i]._id
+            var result = await Project.findById(id);
             projects.push(result);
-            console.log(projects);
-        });
-
-        console.log('Test');
+        }
+        // console.log('Test');
         res.send(projects)
     }
 
