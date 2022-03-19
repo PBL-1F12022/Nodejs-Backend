@@ -16,7 +16,16 @@
     "express": "^4.17.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.1",
+    "monkeylearn": "^3.4.0",
     "nodemon": "^2.0.15",
     "validator": "^13.7.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PBL-1F12022/Nodejs-Backend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/PBL-1F12022/Nodejs-Backend/issues"
+  },
+  "homepage": "https://github.com/PBL-1F12022/Nodejs-Backend#readme"
 }

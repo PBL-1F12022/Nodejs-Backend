@@ -28,6 +28,14 @@ const projectSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true
+    },
+    sector: {
+        type: String,
+        trim: true
+    },
+    sectorAccuracy: {
+        type: Number,
+        trim : true
     }
 }, {
     timestamps: true
