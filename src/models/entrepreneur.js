@@ -32,7 +32,10 @@ const entrepreneurSchema = new mongoose.Schema({
             type: String,
             required: true
         }
-    }]
+    }],
+    coins: {
+        type: Number,
+    }
 }, {
     timestamps: true
 })

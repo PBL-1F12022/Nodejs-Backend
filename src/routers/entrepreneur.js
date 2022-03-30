@@ -7,6 +7,7 @@ const router = new express.Router();
 router.post("/entrepreneur", async (req, res) => {
   const entrepreneur = new Entrepreneur(req.body);
   try {
+    entrepreneur.coins = 0;
     await entrepreneur.save();
     const token = await entrepreneur.generateAuthToken();
     res.status(201).send({ entrepreneur, token });

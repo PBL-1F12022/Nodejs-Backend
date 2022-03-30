@@ -8,6 +8,7 @@ const router = new express.Router()
 router.post('/investor', async (req, res) => {
     const investor = new Investor(req.body)
     try {
+        investor.coins = 0;
         await investor.save()
         const token = await investor.generateAuthToken()
         res.status(201).send({ investor, token })

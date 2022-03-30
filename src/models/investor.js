@@ -46,7 +46,10 @@ const investorSchema = new mongoose.Schema({
             required: false,
             unique: false
         }
-    }]
+    }],
+    coins: {
+        type: Number,
+    }
 }, {
     timestamps: true
 })

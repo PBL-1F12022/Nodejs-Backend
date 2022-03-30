@@ -6,10 +6,12 @@ const MonkeyLearn = require("monkeylearn");
 const router = new express.Router();
 
 router.post("/projects", authE, async (req, res) => {
-  const ml = new MonkeyLearn(process.env.MONKEYLEARN_API.toString());
-  let model_id = process.env.MONKEYLEARN_MODELID.toString();
-  let data = req.body.description;
-  try {
+  const ml = new MonkeyLearn(process.env.MONKEYLEARN_API);
+  let model_id = process.env.MONKEYLEARN_MODELID;
+  let data = []
+  data[0] = req.body.description;
+
+  try { 
     await ml.classifiers.classify(model_id, data).then((result) => {
       sectorName = result.body[0].classifications[0].tag_name;
       classificationAccuracy = result.body[0].classifications[0].confidence;
