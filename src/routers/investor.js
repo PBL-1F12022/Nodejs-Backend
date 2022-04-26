@@ -93,4 +93,26 @@ router.get("/bookmarks", authI, async (req, res) => {
     }
 });
 
+router.post("/investor/invest", authI, async (req, res) => {
+    try {
+        const _id = req.body.project_id
+        const amount = req.body.amount
+
+        const project = await Project.findOne({
+            _id,
+        });
+
+        if (project.remainingAmount < amount){
+            res.status(400).send({msg: "Investing amount greater than aking price"});
+        }
+        else {
+            //! TODO change the project details
+            res.status(200).send({msg: "Investment Successful!"})
+        }
+
+    } catch (e) {
+        res.status(500).send(e);
+    }
+});
+
 module.exports = router;

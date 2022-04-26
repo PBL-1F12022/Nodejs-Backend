@@ -24,6 +24,7 @@ router.post("/projects", authE, async (req, res) => {
             ownerName: req.entrepreneur.name,
             sector: sectorName,
             sectorAccuracy: classificationAccuracy,
+            remainingAmount: req.body.askingPrice
         });
 
         await project.save();

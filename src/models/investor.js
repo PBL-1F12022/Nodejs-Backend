@@ -54,6 +54,12 @@ const investorSchema = new mongoose.Schema({
     timestamps: true
 })
 
+projectSchema.virtual('investorDetails', {
+    ref: 'Project',
+    localField: '_id',
+    foreignField: 'investorId'
+})
+
 investorSchema.methods.generateAuthToken = async function () {
     const investor = this
     const token = jwt.sign({ _id: investor.id.toString() }, process.env.JWT_SECRET)

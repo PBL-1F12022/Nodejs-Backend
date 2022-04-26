@@ -36,7 +36,27 @@ const projectSchema = new mongoose.Schema({
     sectorAccuracy: {
         type: Number,
         trim : true
-    }
+    },
+    remainingAmount : {
+        type: Number
+    },
+    investorDetails: [{
+        investorId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Investor',
+            required: true,
+            unique: false
+        },
+        name: {
+            type: String,
+            trim: true,
+            required: true
+        },
+        amount: {
+            type: Number,
+            required: true
+        }
+    }],
 }, {
     timestamps: true
 })
