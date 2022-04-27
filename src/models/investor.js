@@ -54,7 +54,7 @@ const investorSchema = new mongoose.Schema({
     timestamps: true
 })
 
-projectSchema.virtual('investorDetails', {
+investorSchema.virtual('investorDetails', {
     ref: 'Project',
     localField: '_id',
     foreignField: 'investorId'
