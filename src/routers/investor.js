@@ -64,11 +64,14 @@ router.post("/bookmark", authI, async (req, res) => {
     try {
         const checkBookmarkId = (obj) => obj._id == req.body.bookmark;
         if (req.investor.bookmarks.some(checkBookmarkId)) {
-            res.status(400).send("Bookmark already present");
+            // res.status(400).send({ msg: "Bookmark already present" });
+            req.investor.bookmarks.remove(req.body.bookmark);
+            req.investor.save();
+            res.send(req.investor.bookmarks);
         } else {
             req.investor.bookmarks.push(req.body.bookmark);
             req.investor.save();
-            res.send(req.body.bookmark);
+            res.send(req.investor.bookmarks);
         }
     } catch (e) {
         res.status(500).send(e);
@@ -111,7 +114,6 @@ router.post("/investor/invest", authI, async (req, res) => {
                 msg: "Insufficient Balance",
             });
         } else {
-            //! TODO change the project details
             req.investor.coins -= amount;
             req.investor.save();
 
