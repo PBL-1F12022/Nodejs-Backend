@@ -33,6 +33,11 @@ const entrepreneurSchema = new mongoose.Schema({
             required: true
         }
     }],
+    phone: {
+        type: Number,
+        required: true,
+        unique: true
+    },
     coins: {
         type: Number,
     }
