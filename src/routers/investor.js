@@ -2,6 +2,7 @@ const express = require("express");
 const authI = require("../middleware/authI");
 const Investor = require("../models/investor");
 const Project = require("../models/project");
+const Entrepreneur = require("../models/entrepreneur");
 const router = new express.Router();
 
 // Investor Creation Api
@@ -126,6 +127,10 @@ router.post("/investor/invest", authI, async (req, res) => {
             });
 
             project.save();
+
+            const owner = await Entrepreneur.findById(project.owner);
+            owner.coins += amount;
+            owner.save();
 
             res.status(200).send({ msg: "Investment Successful!" });
         }
