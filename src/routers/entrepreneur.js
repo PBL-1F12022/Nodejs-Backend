@@ -1,6 +1,7 @@
 const { response } = require("express");
 const express = require("express");
 const authE = require("../middleware/authE");
+const Project = require("../models/project")
 const Entrepreneur = require("../models/entrepreneur");
 const router = new express.Router();
 
@@ -53,6 +54,22 @@ router.delete("/entrepreneur/me", authE, async (req, res) => {
     try {
         await req.entrepreneur.remove();
         res.send({ msg: "Entrepreneur deleted successfully" });
+    } catch (e) {
+        res.status(500).send(e);
+    }
+});
+
+router.get("/entrepreneur/invested_details", authE, async (req, res) => {
+    try {
+        console.log("Test");
+
+        console.log(req.entrepreneur._id)
+
+        const my_projects = await Project.find({
+            owner: req.entrepreneur._id,    
+        }).exec();
+
+        res.send(my_projects);
     } catch (e) {
         res.status(500).send(e);
     }

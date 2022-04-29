@@ -116,6 +116,15 @@ router.post("/investor/invest", authI, async (req, res) => {
             });
         } else {
             req.investor.coins -= amount;
+
+            const equity = (project.equity * amount) / project.askingPrice;
+
+            req.investor.investments.push({
+                investments: _id,
+                amount: amount,
+                equity: equity,
+            });
+
             req.investor.save();
 
             project.remainingAmount -= amount;
@@ -124,6 +133,7 @@ router.post("/investor/invest", authI, async (req, res) => {
                 investorId: req.investor._id,
                 name: req.investor.name,
                 amount: amount,
+                equity: equity,
             });
 
             project.save();
@@ -134,6 +144,28 @@ router.post("/investor/invest", authI, async (req, res) => {
 
             res.status(200).send({ msg: "Investment Successful!" });
         }
+    } catch (e) {
+        res.status(500).send(e);
+    }
+});
+
+router.get("/investor/investments", authI, async (req, res) => {
+    try {
+        var investedProjects = [];
+        const investments = req.investor.investments;
+
+        for (let i = 0; i < investments.length; i++) {
+            let id = investments[i]._id;
+            const project = await Project.findOne({
+                id,
+            });
+            investedProjects.push({
+                project: project,
+                amount: investments[i].amount,
+                equity: investments[i].equity,
+            });
+        }
+        res.send(investedProjects);
     } catch (e) {
         res.status(500).send(e);
     }
