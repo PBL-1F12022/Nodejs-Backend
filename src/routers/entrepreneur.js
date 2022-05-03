@@ -1,7 +1,7 @@
 const { response } = require("express");
 const express = require("express");
 const authE = require("../middleware/authE");
-const Project = require("../models/project")
+const Project = require("../models/project");
 const Entrepreneur = require("../models/entrepreneur");
 const router = new express.Router();
 
@@ -63,10 +63,10 @@ router.get("/entrepreneur/invested_details", authE, async (req, res) => {
     try {
         console.log("Test");
 
-        console.log(req.entrepreneur._id)
+        console.log(req.entrepreneur._id);
 
         const my_projects = await Project.find({
-            owner: req.entrepreneur._id,    
+            owner: req.entrepreneur._id,
         }).exec();
 
         res.send(my_projects);
