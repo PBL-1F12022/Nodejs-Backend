@@ -14,7 +14,7 @@ const authE = async (req, res, next) => {
         req.entrepreneur = entrepreneur
         next()
     } catch (e) {
-        res.status(401).send({ error: "Please Authenticate." })
+        res.status(401).send({ msg: "Please Authenticate." })
     }
 }
 
