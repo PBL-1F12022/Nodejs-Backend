@@ -120,7 +120,7 @@ router.post("/investor/invest", authI, async (req, res) => {
             const equity = (project.equity * amount) / project.askingPrice;
 
             req.investor.investments.push({
-                investments: _id,
+                project: _id,
                 amount: amount,
                 equity: equity,
             });
@@ -155,10 +155,8 @@ router.get("/investor/investments", authI, async (req, res) => {
         const investments = req.investor.investments;
 
         for (let i = 0; i < investments.length; i++) {
-            let id = investments[i]._id;
-            const project = await Project.findOne({
-                id,
-            });
+            let id = investments[i].project;
+            const project = await Project.findById(id);
             investedProjects.push({
                 project: project,
                 amount: investments[i].amount,
