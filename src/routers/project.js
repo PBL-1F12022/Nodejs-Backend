@@ -12,11 +12,8 @@ router.post("/projects", authE, async (req, res) => {
     data[0] = req.body.description;
 
     try {
-        await ml.classifiers.classify(model_id, data).then((result) => {
-            sectorName = result.body[0].classifications[0].tag_name;
-            classificationAccuracy =
-                result.body[0].classifications[0].confidence;
-        });
+        const sectorName = "Investment";
+        const classificationAccuracy = 0.58;
 
         const project = new Project({
             ...req.body,
